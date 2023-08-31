@@ -53,3 +53,15 @@ class CardTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             Card(rank = "2", suit = "Dots")
 
+    def test_can_create_standard_52_cards(self):
+        cards = Card.create_standard_52_cards()
+        self.assertEqual(len(cards), 52)
+        for card in cards:
+            self.assertIn(card.rank, Card.RANKS)
+            self.assertIn(card.suit, Card.SUITS)
+
+    def test_figures_out_if_two_cards_are_equal(self):
+        card1 = Card("Ace", "Spades")
+        card2 = Card("Ace", "Spades")
+        self.assertEqual(card1, card2)
+

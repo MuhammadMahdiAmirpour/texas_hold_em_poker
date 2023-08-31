@@ -19,12 +19,12 @@ class Card(object):
                     )
 
     @classmethod
-    def validate_suit(cls, suit: str) -> bool:
-        pass
-
-    @classmethod
-    def validate_rank(cls, rank: str) -> bool:
-        pass
+    def create_standard_52_cards(cls) -> list:
+        cards = []
+        for suit in cls.SUITS:
+            for rank in cls.RANKS:
+                cards.append(cls(rank = rank, suit= suit))
+        return cards
 
     def __init__(self, rank: str, suit: str) -> None:
         if rank not in self.RANKS:
@@ -55,4 +55,7 @@ class Card(object):
 
     def __repr__(self) -> str:
         return f"Card('{self.rank}', '{self.suit}')"
+
+    def __eq__(self, __value: object) -> bool:
+        return all(self.rank == __value.rank, self.suit == __value.suit)
 
