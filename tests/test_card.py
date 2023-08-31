@@ -56,9 +56,7 @@ class CardTest(unittest.TestCase):
     def test_can_create_standard_52_cards(self):
         cards = Card.create_standard_52_cards()
         self.assertEqual(len(cards), 52)
-        for card in cards:
-            self.assertIn(card.rank, Card.RANKS)
-            self.assertIn(card.suit, Card.SUITS)
+        [(self.assertIn(card.rank, Card.RANKS), self.assertIn(card.suit, Card.SUITS)) for card in cards]
 
     def test_figures_out_if_two_cards_are_equal(self):
         card1 = Card("Ace", "Spades")

@@ -20,11 +20,11 @@ class Card(object):
 
     @classmethod
     def create_standard_52_cards(cls) -> list:
-        cards = []
-        for suit in cls.SUITS:
-            for rank in cls.RANKS:
-                cards.append(cls(rank = rank, suit= suit))
-        return cards
+        return [
+                cls(rank = rank, suit = suit)
+                for suit in cls.SUITS
+                for rank in cls.RANKS
+                ]
 
     def __init__(self, rank: str, suit: str) -> None:
         if rank not in self.RANKS:
@@ -40,6 +40,10 @@ class Card(object):
         return self._rank
     @rank.setter
     def rank(self, value):
+        if value.rank not in Card.RANKS:
+            raise ValueError(f"Invalid rank. Rank must be one of the following: {self.RANKS}")
+        if value.suit not in Card.SUITS:
+            raise ValueError(f"Invalid suit. Suit must be one of the following: {self.SUITS}")
         self._rank = value
 
     @property
@@ -57,5 +61,5 @@ class Card(object):
         return f"Card('{self.rank}', '{self.suit}')"
 
     def __eq__(self, __value: object) -> bool:
-        return all(self.rank == __value.rank, self.suit == __value.suit)
+        return all([self.rank == __value.rank, self.suit == __value.suit])
 
