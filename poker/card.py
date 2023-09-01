@@ -63,3 +63,8 @@ class Card(object):
     def __eq__(self, __value: object) -> bool:
         return all([self.rank == __value.rank, self.suit == __value.suit])
 
+    def __lt__(self, __value: object) -> bool:
+        current_card_index = self.RANKS.index(self.rank)
+        other_card_rank_index = self.RANKS.index(__value.rank)
+        return current_card_index < other_card_rank_index
+    
