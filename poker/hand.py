@@ -5,9 +5,12 @@ class Hand(object):
         self._cards = cards_copy
 
     @property
-    def _rank_validations_from_best_to_worst(self):
+    def _rank_validations_from_best_to_worst(self) -> tuple:
         """The _rank_validations_from_best_to_worst property."""
         return (
+                ("Straight Flush", self._straight_flush),
+                ("Four Of A Kind", self._four_of_a_kind),
+                ("Full House", self._full_house),
                 ("Flush", self._flush),
                 ("Straight", self._straight),
                 ("Three Of A Kind", self._three_of_a_kind),
@@ -37,11 +40,19 @@ class Hand(object):
     def cards(self):
         """The cards property."""
         return self._cards
-    @cards.setter
-    def cards(self, value):
-        self._cards = value
 
-    def _flush(self):
+    def _straight_flush(self) -> bool:
+        return all([self._straight(), self._flush()])
+
+    def _four_of_a_kind(self) -> bool:
+        ranks_with_four_of_a_kind = self._ranks_with_count(4)
+        if len(ranks_with_four_of_a_kind) == 1:
+            return True
+
+    def _full_house(self) -> bool:
+        return all([self._three_of_a_kind(), self._pair()])
+
+    def _flush(self) -> bool:
         suits_that_occur_5_or_more_times = {
                 suit: suit_count
                 for suit, suit_count in self._card_suit_counts.items()
@@ -53,8 +64,8 @@ class Hand(object):
 #             suit_set.add(card.suit)
 #         return all([len(suit_set) == 1, len(self.cards) => 5])
 
-    def _straight(self):
-        if len(self.cards) != 5:
+    def _straight(self) -> bool:
+        if len(self.cards) < 5:
             return False
         for index in range(4):
             if self.cards[index + 1].rank_index - self.cards[index].rank_index != 1:
@@ -85,12 +96,12 @@ class Hand(object):
     def _high_card(self) -> bool:
         return True
 
-    def best_rank(self):
+    def best_rank(self) -> str:
         for name, validator_func in self._rank_validations_from_best_to_worst:
             if validator_func():
                 return name
 
-    def _ranks_with_count(self, count):
+    def _ranks_with_count(self, count) -> dict:
         return {
                 rank: rank_count
                 for rank, rank_count in self._card_rank_counts.items()
