@@ -8,6 +8,7 @@ class Hand(object):
     def _rank_validations_from_best_to_worst(self) -> tuple:
         """The _rank_validations_from_best_to_worst property."""
         return (
+                ("Royal Flush", self._royal_flush),
                 ("Straight Flush", self._straight_flush),
                 ("Four Of A Kind", self._four_of_a_kind),
                 ("Full House", self._full_house),
@@ -40,6 +41,9 @@ class Hand(object):
     def cards(self):
         """The cards property."""
         return self._cards
+
+    def _royal_flush(self) -> bool:
+        return all([self._straight_flush(), self.cards[-1].rank == "Ace"])
 
     def _straight_flush(self) -> bool:
         return all([self._straight(), self._flush()])
