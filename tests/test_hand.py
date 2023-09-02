@@ -83,6 +83,29 @@ class HandTest(unittest.TestCase):
                 hand.best_rank(),
                 "Straight"
                 )
+        cards = [
+                Card(rank = "King", suit = "Clubs"),
+                Card(rank = "Ace", suit = "Hearts"),
+                Card(rank = "Queen", suit = "Clubs"),
+                Card(rank = "Jack", suit = "Spades"),
+                Card(rank = "10", suit = "Diamonds"),
+            ]
+        hand = Hand(cards = cards)
+        self.assertEqual(
+                hand.best_rank(),
+                "Straight"
+                )
+
+    def test_does_not_deem_two_consecutive_cards_as_straight(self):
+        cards = [
+                Card(rank = "6", suit = "Hearts"),
+                Card(rank = "7", suit = "Diamonds"),
+                ]
+        hand = Hand(cards = cards)
+        self.assertEqual(
+                hand.best_rank(),
+                "High Card"
+                )
 
 if __name__ == "__main__":
     unittest.main()

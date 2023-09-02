@@ -33,26 +33,22 @@ class Card(object):
             raise ValueError(f"Invalid suit. Suit must be one of the following: {self.SUITS}")
         self._rank = rank
         self._suit = suit
+        self._rank_index = self.RANKS.index(self.rank)
+
+    @property
+    def rank_index(self):
+        """The rank_index property."""
+        return self._rank_index
 
     @property
     def rank(self):
         """The rank property."""
         return self._rank
-    @rank.setter
-    def rank(self, value):
-        if value.rank not in Card.RANKS:
-            raise ValueError(f"Invalid rank. Rank must be one of the following: {self.RANKS}")
-        if value.suit not in Card.SUITS:
-            raise ValueError(f"Invalid suit. Suit must be one of the following: {self.SUITS}")
-        self._rank = value
 
     @property
     def suit(self):
         """The suit property."""
         return self._suit
-    @suit.setter
-    def suit(self, value):
-        self._suit = value
 
     def __str__(self) -> str:
         return f"{self.rank} of {self.suit}"
@@ -64,7 +60,6 @@ class Card(object):
         return all([self.rank == __value.rank, self.suit == __value.suit])
 
     def __lt__(self, __value: object) -> bool:
-        current_card_index = self.RANKS.index(self.rank)
-        other_card_rank_index = self.RANKS.index(__value.rank)
-        return current_card_index < other_card_rank_index
+        return self.rank_index < __value.rank_index
+
     

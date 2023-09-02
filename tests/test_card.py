@@ -99,3 +99,7 @@ class CardTest(unittest.TestCase):
                     ]
                 )
 
+    def test_knows_its_rank_index(self):
+        card = Card("Jack", "Hearts")
+        self.assertEqual(card.rank_index, 9)
+
