@@ -15,8 +15,7 @@ class GameRound(object):
         return self._players
     
     def play(self):
-        # shuffle the deck
-        # Hand out two cards to each player
-        # Ask for wagers
         self.deck.shuffle()
+        for player in self.players:
+            self.deck.remove_cards(2)
 
