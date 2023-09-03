@@ -1,8 +1,9 @@
 class Hand(object):
-    def __init__(self, cards: list) -> None:
-        cards_copy = cards[:]
-        cards_copy.sort()
-        self._cards = cards_copy
+    def __init__(self) -> None:
+        self._cards = []
+
+    def __repr__(self) -> str:
+        return ", ".join([str(card) for card in self.cards])
 
     @property
     def _rank_validations_from_best_to_worst(self) -> tuple:
@@ -116,4 +117,9 @@ class Hand(object):
                 for rank, rank_count in self._card_rank_counts.items()
                 if rank_count == count
                 }
+    
+    def add_cards(self, cards) -> None:
+        cards_copy = cards[:]
+        cards_copy.sort()
+        self.cards.extend(cards_copy)
 

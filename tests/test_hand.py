@@ -4,6 +4,22 @@ from poker.hand import Hand
 
 
 class HandTest(unittest.TestCase):
+    def test_starts_out_with_no_cards(self):
+        hand = Hand()
+        self.assertEqual(hand.cards, [])
+
+    def test_shows_all_its_cards_in_technical_representation(self):
+        cards = [
+                Card(rank = "Ace", suit = "Diamonds"),
+                Card(rank = "7", suit = "Clubs"),
+                ]
+        hand = Hand()
+        hand.add_cards(cards)
+        self.assertEqual(
+                repr(hand),
+                "7 of Clubs, Ace of Diamonds"
+                )
+
     def test_receives_and_stores_card(self):
         ace_of_spades = Card(rank = "Ace", suit = "Spades")
         six_of_clubs = Card(rank = "6", suit = "Clubs")
@@ -11,17 +27,18 @@ class HandTest(unittest.TestCase):
                 ace_of_spades,
                 six_of_clubs
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.cards,
                 [
                     six_of_clubs,
-                    ace_of_spades
+                    ace_of_spades,
                     ]
                 )
 
     def test_figures_out_no_cards_is_best_rank(self):
-        hand = Hand(cards = [])
+        hand = Hand()
         self.assertEqual(
                 hand.best_rank(),
                 "No Cards"
@@ -32,7 +49,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = "Ace", suit = "Diamonds"),
                 Card(rank = "7", suit = "Clubs"),
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertIn(
                 hand.best_rank(),
                 "High Card"
@@ -43,7 +61,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = "Ace", suit = "Spades"),
                 Card(rank = "Ace", suit = "Clubs")
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Pair"
@@ -57,7 +76,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = "King", suit = "Hearts"),
                 Card(rank = "King", suit = "Diamonds"),
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Two Pair"
@@ -71,7 +91,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = "Ace", suit = "Spades"),
                 Card(rank = "5", suit = "Clubs"),
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Three Of A Kind"
@@ -85,7 +106,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = "8", suit = "Spades"),
                 Card(rank = "7", suit = "Diamonds"),
             ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Straight"
@@ -97,18 +119,20 @@ class HandTest(unittest.TestCase):
                 Card(rank = "Jack", suit = "Spades"),
                 Card(rank = "10", suit = "Diamonds"),
             ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Straight"
                 )
 
-    def test_does_not_deem_two_consecutive_cards_as_straight(self):
+    def test_does_not_seem_two_consecutive_cards_as_straight(self):
         cards = [
                 Card(rank = "6", suit = "Hearts"),
                 Card(rank = "7", suit = "Diamonds"),
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "High Card"
@@ -119,7 +143,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = rank, suit = "Hearts")
                 for rank in ["2", "5", "8", "10", "Ace",]
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Flush"
@@ -133,7 +158,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = "9", suit = "Diamonds"),
                 Card(rank = "9", suit = "Spades"),
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Full House"
@@ -147,13 +173,14 @@ class HandTest(unittest.TestCase):
                 Card(rank = "3", suit = "Diamonds"),
                 Card(rank = "9", suit = "Spades"),
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Four Of A Kind"
                 )
 
-    def test_figures_out_stright_flush_is_best_rank(self):
+    def test_figures_out_straight_flush_is_best_rank(self):
         cards = [
                 Card(rank = "3", suit = "Clubs"),
                 Card(rank = "4", suit = "Clubs"),
@@ -161,7 +188,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = "6", suit = "Clubs"),
                 Card(rank = "7", suit = "Clubs"),
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Straight Flush"
@@ -175,7 +203,8 @@ class HandTest(unittest.TestCase):
                 Card(rank = "King", suit = "Clubs"),
                 Card(rank = "Ace", suit = "Clubs"),
                 ]
-        hand = Hand(cards = cards)
+        hand = Hand()
+        hand.add_cards(cards)
         self.assertEqual(
                 hand.best_rank(),
                 "Royal Flush"

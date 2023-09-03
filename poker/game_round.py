@@ -15,7 +15,13 @@ class GameRound(object):
         return self._players
     
     def play(self):
+        self._shuffle_deck()
+        self._deal_initial_two_cards_to_each_player()
+
+    def _shuffle_deck(self):
         self.deck.shuffle()
+
+    def _deal_initial_two_cards_to_each_player(self):
         for player in self.players:
-            self.deck.remove_cards(2)
+            player.add_cards(self.deck.remove_cards(2))
 

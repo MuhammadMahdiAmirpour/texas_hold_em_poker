@@ -3,7 +3,10 @@ import random
 class Deck(object):
     def __init__(self) -> None:
         self._cards = []
-        
+
+    def __len__(self) -> int:
+        return len(self.cards)
+
     @property
     def cards(self):
         """The cards property."""
