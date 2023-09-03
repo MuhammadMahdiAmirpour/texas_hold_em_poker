@@ -19,3 +19,8 @@ class Deck(object):
     def shuffle(self) -> None:
         random.shuffle(self.cards)
 
+    def remove_cards(self, number: int) -> list:
+        cards_to_remove = self.cards[:number]
+        del self.cards[:number]
+        return cards_to_remove
+
