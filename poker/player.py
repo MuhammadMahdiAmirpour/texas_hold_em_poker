@@ -13,6 +13,6 @@ class Player(object):
         """The hand property."""
         return self._hand
 
-    def best_hand(self):
-        self.hand.best_rank()
+    def best_hand(self) -> str:
+        return self.hand.best_rank()
 

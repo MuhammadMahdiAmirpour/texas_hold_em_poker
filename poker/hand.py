@@ -18,6 +18,7 @@ class Hand(object):
                 ("Two Pair", self._two_pair),
                 ("Pair", self._pair),
                 ("High Card", self._high_card),
+                ("No Cards", self._no_cards),
             )
 
     @property
@@ -43,6 +44,7 @@ class Hand(object):
         return self._cards
 
     def _royal_flush(self) -> bool:
+        if len(self.cards) == 0: return False
         return all([self._straight_flush(), self.cards[-1].rank == "Ace"])
 
     def _straight_flush(self) -> bool:
@@ -98,7 +100,10 @@ class Hand(object):
         return len(ranks_with_pairs) == 1
 
     def _high_card(self) -> bool:
-        return True
+        return len(self.cards) >= 2
+
+    def _no_cards(self) -> bool:
+        return len(self.cards) == 0
 
     def best_rank(self) -> str:
         for name, validator_func in self._rank_validations_from_best_to_worst:
