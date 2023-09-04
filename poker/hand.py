@@ -66,10 +66,6 @@ class Hand(object):
                 if suit_count >= 5
                 }
         return len(suits_that_occur_5_or_more_times) == 1
-#         suit_set = set()
-#         for card in self.cards:
-#             suit_set.add(card.suit)
-#         return all([len(suit_set) == 1, len(self.cards) => 5])
 
     def _straight(self) -> bool:
         if len(self.cards) < 5:
@@ -78,14 +74,6 @@ class Hand(object):
             if self.cards[index + 1].rank_index - self.cards[index].rank_index != 1:
                 return False
         return True
-#         rank_indexes = [card.rank_index for  card in self.cards]
-#         starting_rank_index = rank_indexes[0]
-#         last_rank_index = rank_indexes[-1]
-#         striaght_consecutive_indexes = list(
-#                 range(starting_rank_index, last_rank_index + 1)
-#                 )
-#         return all([rank_indexes == striaght_consecutive_indexes,
-#                     len(rank_indexes) == len(striaght_consecutive_indexes) == 5])
 
     def _three_of_a_kind(self) -> bool:
         ranks_with_three_of_a_kind = self._ranks_with_count(3)

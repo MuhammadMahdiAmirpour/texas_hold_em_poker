@@ -16,10 +16,16 @@ class GameRoundTest(unittest.TestCase):
                 Card(rank = "9", suit = "Diamonds"),
                 Card(rank = "4", suit = "Spades"),
                 ]
-        self.community_cards = [
+        self.flop_cards = [
                 Card(rank = "2", suit = "Diamonds"),
                 Card(rank = "4", suit = "Hearts"),
                 Card(rank = "10", suit = "Spades"),
+                ]
+        self.turn_cards = [
+                Card(rank = "9", suit = "Hearts")
+                ]
+        self.river_cards = [
+                Card(rank = "Queen", suit = "Clubs")
                 ]
 
     def test_store_deck_palyers(self):
@@ -59,7 +65,9 @@ class GameRoundTest(unittest.TestCase):
         mock_deck.remove_cards.side_effect = [
                 self.first_two_cards,
                 self.second_two_cards,
-                self.community_cards,
+                self.flop_cards,
+                self.turn_cards,
+                self.river_cards,
                 ]
         mock_player1 = MagicMock()
         mock_player2 = MagicMock()
@@ -96,7 +104,7 @@ class GameRoundTest(unittest.TestCase):
                 [player2]
                 )
 
-    def test_deals_same_three_community_cards_to_all_players_in_flop(self):
+    def test_deals_eack_player_3_flop_1_turn_and_1_river_cards(self):
         mock_player1 = MagicMock()
         mock_player1.wants_to_fold.return_value = False
         mock_player2 = MagicMock()
@@ -106,13 +114,22 @@ class GameRoundTest(unittest.TestCase):
         mock_deck.remove_cards.side_effect = [
                 self.first_two_cards,
                 self.second_two_cards,
-                self.community_cards,
+                self.flop_cards,
+                self.turn_cards,
+                self.river_cards,
                 ]
         game_round = GameRound(deck = mock_deck, players = players)
         game_round.play()
-        mock_deck.remove_cards.assert_has_calls([call(2), call(2)])
-        mock_player1.add_cards.assert_called_with(self.community_cards)
-        mock_player2.add_cards.assert_called_with(self.community_cards)
+        mock_deck.remove_cards.assert_has_calls([
+            call(3), call(1), call(1)
+            ])
+        calls = [
+            call(self.flop_cards),
+            call(self.turn_cards),
+            call(self.river_cards),
+        ]
+        for player in players:
+            player.add_cards.assert_has_calls(calls)
 
 if __name__ == "__main__":
     unittest.main()
