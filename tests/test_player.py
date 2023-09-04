@@ -38,6 +38,13 @@ class TestPlayer(unittest.TestCase):
         player.add_cards(cards)
         mock_hand.add_cards.assert_called_once_with(cards)
 
+    def test_decides_to_continute_or_drop_out_of_game(self):
+        player = Player(name = "Sharon", hand = Hand())
+        self.assertEqual(
+                player.wants_to_fold(),
+                False
+                )
+
 if __name__ == "__main__":
     unittest.main()
 

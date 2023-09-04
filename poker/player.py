@@ -19,3 +19,6 @@ class Player(object):
     def add_cards(self, cards: list) -> None:
         self.hand.add_cards(cards)
 
+    def wants_to_fold(self):
+        return False
+
