@@ -44,46 +44,6 @@ class HandTest(unittest.TestCase):
                 "No Cards"
                 )
 
-    def test_figures_out_straight_is_the_best_rank(self):
-        cards = [
-                Card(rank = "10", suit = "Clubs"),
-                Card(rank = "6", suit = "Hearts"),
-                Card(rank = "9", suit = "Clubs"),
-                Card(rank = "8", suit = "Spades"),
-                Card(rank = "7", suit = "Diamonds"),
-            ]
-        hand = Hand()
-        hand.add_cards(cards)
-        self.assertEqual(
-                hand.best_rank(),
-                "Straight"
-                )
-        cards = [
-                Card(rank = "King", suit = "Clubs"),
-                Card(rank = "Ace", suit = "Hearts"),
-                Card(rank = "Queen", suit = "Clubs"),
-                Card(rank = "Jack", suit = "Spades"),
-                Card(rank = "10", suit = "Diamonds"),
-            ]
-        hand = Hand()
-        hand.add_cards(cards)
-        self.assertEqual(
-                hand.best_rank(),
-                "Straight"
-                )
-
-    def test_does_not_seem_two_consecutive_cards_as_straight(self):
-        cards = [
-                Card(rank = "6", suit = "Hearts"),
-                Card(rank = "7", suit = "Diamonds"),
-                ]
-        hand = Hand()
-        hand.add_cards(cards)
-        self.assertEqual(
-                hand.best_rank(),
-                "High Card"
-                )
-
     def test_figures_out_best_rank_when_flush(self):
         cards = [
                 Card(rank = rank, suit = "Hearts")

@@ -1,9 +1,10 @@
 from poker.validators import (
-        HighCardValidator,
         NoCardsValidator,
+        HighCardValidator,
         PairValidator,
         TwoPairValidator,
         ThreeOfAKindValidator,
+        StraightValidator,
         )
 
 class Hand(object):
@@ -22,7 +23,7 @@ class Hand(object):
                 ("Four Of A Kind", self._four_of_a_kind),
                 ("Full House", self._full_house),
                 ("Flush", self._flush),
-                ("Straight", self._straight),
+                ("Straight", StraightValidator(cards = self.cards).is_valid),
                 ("Three Of A Kind", ThreeOfAKindValidator(cards = self.cards).is_valid),
                 ("Two Pair", TwoPairValidator(cards = self.cards).is_valid),
                 ("Pair", PairValidator(cards = self.cards).is_valid),
@@ -60,7 +61,7 @@ class Hand(object):
         return all([self._straight_flush(), self.cards[-1].rank == "Ace"])
 
     def _straight_flush(self) -> bool:
-        return all([self._straight(), self._flush()])
+        return all([StraightValidator(cards = self.cards).is_valid(), self._flush()])
 
     def _four_of_a_kind(self) -> bool:
         ranks_with_four_of_a_kind = self._ranks_with_count(4)
@@ -77,14 +78,6 @@ class Hand(object):
                 if suit_count >= 5
                 }
         return len(suits_that_occur_5_or_more_times) == 1
-
-    def _straight(self) -> bool:
-        if len(self.cards) < 5:
-            return False
-        for index in range(4):
-            if self.cards[index + 1].rank_index - self.cards[index].rank_index != 1:
-                return False
-        return True
 
     def best_rank(self) -> str:
         for name, validator_func in self._rank_validations_from_best_to_worst:

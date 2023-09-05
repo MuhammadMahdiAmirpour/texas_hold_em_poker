@@ -1,7 +1,9 @@
 class Validator(object):
 
     def __init__(self, cards: list) -> None:
-        self._cards = cards
+        cards_copy = cards[:]
+        cards_copy.sort()
+        self._cards = cards_copy
 
     def _ranks_with_count(self, count) -> dict:
         return {

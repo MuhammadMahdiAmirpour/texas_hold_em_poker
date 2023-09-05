@@ -36,4 +36,4 @@ class ThreeOfAKindValidatorTest(unittest.TestCase):
                     self.king_of_hearts,
                     ]
                 )
- 
+
