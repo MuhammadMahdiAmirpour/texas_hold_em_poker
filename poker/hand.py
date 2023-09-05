@@ -3,6 +3,7 @@ from poker.validators import (
         NoCardsValidator,
         PairValidator,
         TwoPairValidator,
+        ThreeOfAKindValidator,
         )
 
 class Hand(object):
@@ -22,7 +23,7 @@ class Hand(object):
                 ("Full House", self._full_house),
                 ("Flush", self._flush),
                 ("Straight", self._straight),
-                ("Three Of A Kind", self._three_of_a_kind),
+                ("Three Of A Kind", ThreeOfAKindValidator(cards = self.cards).is_valid),
                 ("Two Pair", TwoPairValidator(cards = self.cards).is_valid),
                 ("Pair", PairValidator(cards = self.cards).is_valid),
                 ("High Card", HighCardValidator(cards = self.cards).is_valid),
@@ -67,7 +68,7 @@ class Hand(object):
             return True
 
     def _full_house(self) -> bool:
-        return all([self._three_of_a_kind(), PairValidator(cards = self.cards).is_valid()])
+        return all([ThreeOfAKindValidator(cards = self.cards), PairValidator(cards = self.cards).is_valid()])
 
     def _flush(self) -> bool:
         suits_that_occur_5_or_more_times = {
@@ -84,11 +85,6 @@ class Hand(object):
             if self.cards[index + 1].rank_index - self.cards[index].rank_index != 1:
                 return False
         return True
-
-    def _three_of_a_kind(self) -> bool:
-        ranks_with_three_of_a_kind = self._ranks_with_count(3)
-        if len(ranks_with_three_of_a_kind) == 1:
-            return True
 
     def best_rank(self) -> str:
         for name, validator_func in self._rank_validations_from_best_to_worst:
