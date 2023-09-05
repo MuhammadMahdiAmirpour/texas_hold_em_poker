@@ -1,3 +1,10 @@
+from poker.validators import (
+        HighCardValidator,
+        NoCardsValidator,
+        PairValidator,
+        TwoPairValidator,
+        )
+
 class Hand(object):
     def __init__(self) -> None:
         self._cards = []
@@ -16,10 +23,10 @@ class Hand(object):
                 ("Flush", self._flush),
                 ("Straight", self._straight),
                 ("Three Of A Kind", self._three_of_a_kind),
-                ("Two Pair", self._two_pair),
-                ("Pair", self._pair),
-                ("High Card", self._high_card),
-                ("No Cards", self._no_cards),
+                ("Two Pair", TwoPairValidator(cards = self.cards).is_valid),
+                ("Pair", PairValidator(cards = self.cards).is_valid),
+                ("High Card", HighCardValidator(cards = self.cards).is_valid),
+                ("No Cards", NoCardsValidator(cards = self.cards).is_valid),
             )
 
     @property
@@ -43,6 +50,9 @@ class Hand(object):
     def cards(self):
         """The cards property."""
         return self._cards
+    @cards.setter
+    def cards(self, value):
+        self._cards = value
 
     def _royal_flush(self) -> bool:
         if len(self.cards) == 0: return False
@@ -57,7 +67,7 @@ class Hand(object):
             return True
 
     def _full_house(self) -> bool:
-        return all([self._three_of_a_kind(), self._pair()])
+        return all([self._three_of_a_kind(), PairValidator(cards = self.cards).is_valid()])
 
     def _flush(self) -> bool:
         suits_that_occur_5_or_more_times = {
@@ -80,20 +90,6 @@ class Hand(object):
         if len(ranks_with_three_of_a_kind) == 1:
             return True
 
-    def _two_pair(self) -> bool:
-        ranks_with_pairs = self._ranks_with_count(2)
-        return len(ranks_with_pairs) == 2
-
-    def _pair(self) -> bool:
-        ranks_with_pairs = self._ranks_with_count(2)
-        return len(ranks_with_pairs) == 1
-
-    def _high_card(self) -> bool:
-        return len(self.cards) >= 2
-
-    def _no_cards(self) -> bool:
-        return len(self.cards) == 0
-
     def best_rank(self) -> str:
         for name, validator_func in self._rank_validations_from_best_to_worst:
             if validator_func():
@@ -107,7 +103,8 @@ class Hand(object):
                 }
     
     def add_cards(self, cards) -> None:
-        cards_copy = cards[:]
+        cards_copy = self.cards[:]
+        cards_copy.extend(cards)
         cards_copy.sort()
-        self.cards.extend(cards_copy)
+        self.cards = cards_copy
 
