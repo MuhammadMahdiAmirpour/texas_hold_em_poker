@@ -57,4 +57,17 @@ class StraightValidtorTest(unittest.TestCase):
                 validator.is_valid(),
                 False
                 )
+    
+    def test_returns_five_highest_cards_in_a_row(self):
+        validator = StraightValidator(cards = self.first_cards)
+        self.assertEqual(
+                validator.valid_cards(),
+                [
+                    self.seven_of_diamonds,
+                    self.eight_of_spades,
+                    self.nine_of_clubs,
+                    self.ten_of_clubs,
+                    self.jack_of_hearts,
+                    ]
+                )
 
