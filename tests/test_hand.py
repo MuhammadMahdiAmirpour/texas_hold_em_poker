@@ -1,7 +1,8 @@
 import unittest
+
 from poker.card import Card
 from poker.hand import Hand
-
+from poker.validators import PairValidator
 
 class HandTest(unittest.TestCase):
     def test_starts_out_with_no_cards(self):
@@ -41,25 +42,19 @@ class HandTest(unittest.TestCase):
         hand = Hand()
         self.assertEqual(
                 hand.best_rank(),
-                "No Cards"
+                (0, "No Cards", [])
                 )
 
-    def test_figures_out_royal_flush_is_best_rank(self):
-        cards = [
-                Card(rank = "10", suit = "Clubs"),
-                Card(rank = "Jack", suit = "Clubs"),
-                Card(rank = "Queen", suit = "Clubs"),
-                Card(rank = "King", suit = "Clubs"),
-                Card(rank = "Ace", suit = "Clubs"),
-                ]
-        hand = Hand()
-        hand.add_cards(cards)
+    def test_interacts_with_validator_to_get_winning_hand(self):
+        class HandWithOneValidator(Hand):
+            VALIDATORS = (PairValidator,)
+        ace_of_hearts = Card(rank = "Ace", suit = "Hearts")
+        ace_of_spades = Card(rank = "Ace", suit = "Spades")
+        cards = [ace_of_hearts, ace_of_spades]
+        hand = HandWithOneValidator()
+        hand.add_cards(cards = cards)
         self.assertEqual(
                 hand.best_rank(),
-                "Royal Flush"
+                (0, "Pair", [ace_of_hearts, ace_of_spades])
                 )
-
-
-if __name__ == "__main__":
-    unittest.main()
 

@@ -2,7 +2,14 @@ class Player(object):
     def __init__(self, name, hand) -> None:
         self._name = name
         self._hand = hand
-        
+
+    def __gt__(self, __value: object) -> bool:
+        current_player_best_validator_index = self.best_hand()[0]
+        other_player_best_validator_index = __value.best_hand()[0]
+        if current_player_best_validator_index == other_player_best_validator_index:
+            return max(self.hand.cards) > max(__value.hand.cards)
+        return current_player_best_validator_index < other_player_best_validator_index
+
     @property
     def name(self) -> str:
         """The name property."""
